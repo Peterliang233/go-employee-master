@@ -11,11 +11,20 @@
 
 - Method: GET
 
+- Request Body
+
+```json
+{
+	"Number": "6109119121",
+}
+```
+
 - Response Body
 
 ```json
 {
-	http.StatusOK,gin.H{
+	"code" : 200,
+	"message":{
 		"Number" :    "6109119121",
 		"Name" :       "Peterliang",
 		"Profession" : "computer",
@@ -34,11 +43,25 @@
 
 - Method: POST
 
+- Request Body
+
+```json{
+	"code" : 200,
+	"message":{
+		"Number" :    "6109119121",
+		"Name" :       "Peterliang",
+		"Profession" : "computer",
+		"Task" :       "move trick",
+	}
+}
+```
+
 - Response Body
 
 ```json
 {
-	http.StatusOK, gin.H{
+	"code" : 200,
+	"message":{
 		"Number" :    "6109119121",
 		"Name" :       "Peterliang",
 		"Profession" : "computer",
@@ -54,23 +77,36 @@
   |  3   |   Profession    | String | 专业 |  Y   |
   |  4   | Task | String | 任务 |  Y   |
 
-  ## 修改员工信息
+## 修改员工信息
 
 - URL: /api/employee
 
 - Method: PUT
 
-- Response Body
+- Request Body
 
-```json
-{
-	http.StatusOK, gin.H{
+```json{
+	"code" : 200,
+	"message":{
 		"Number" :    "6109119121",
 		"Name" :       "Peterliang",
 		"Profession" : "computer",
 		"Task" :       "move trick",
 	}
 }
+```
+
+- Response Body
+
+```json
+{
+	"code" : 200,
+	"message":{
+		"Number" :    "6109119121",
+		"Name" :       "Peterliang",
+		"Profession" : "computer",
+		"Task" :       "move trick",
+	}
 ```
 
  | 序号 |  参数   |  类型  |  简介  | 必须 |
@@ -81,17 +117,26 @@
   |  4   | Task | String | 新的任务 |  N   |
 
 
-  ## 删除员工信息
+## 删除员工信息
 
 - URL: /api/employee
 
 - Method: DELETE
 
+- Request Body
+
+```json
+{
+	"Number": "6109119121",
+}
+```
+
 - Response Body
 
 ```json
 {
-	http.StatusOK, gin.H{
+	"code" : 200,
+	"message":{
 		"Number" :    "6109119121",
 		"Name" :       "Peterliang",
 		"Profession" : "computer",
