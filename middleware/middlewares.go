@@ -10,20 +10,22 @@ import (
 )
 
 func Adapter(c *gin.Context){
+	c.Next()
 	inputString, err := os.OpenFile(
 		settings.DatabaseString.FilePath,
 		os.O_WRONLY|os.O_TRUNC|os.O_CREATE,
 		0666,
 	)
 	if err != nil {
-		fmt.Println("Open error")
+		panic(err)
 	}
-	defer inputString.Close()
 	for i := 0; i < model.Num; i++ {
 		fmt.Fprintln(inputString, model.Worker[i].Number)
 		fmt.Fprintln(inputString, model.Worker[i].Name)
 		fmt.Fprintln(inputString, model.Worker[i].Profession)
 		fmt.Fprintln(inputString, model.Worker[i].Task)
 	}
-	return
+	if err := inputString.Close(); err != nil {
+		panic(err)
+	}
 }

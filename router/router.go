@@ -8,8 +8,8 @@ import (
 
 func InitRouters() *gin.Engine {
 	router := gin.Default()
-	router.Use(middlewares.Adapter)
 	api := router.Group("/api")
+	api.Use(middlewares.Adapter)
 	{
 		api.GET("/employee", v1.FindEmployee)
 		api.POST("/employee", v1.AddEmployee)

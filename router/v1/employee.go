@@ -17,8 +17,10 @@ func FindEmployee(c *gin.Context){  //find the information
 			return
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"404" : "not found",
+	c.JSON(http.StatusNotFound, gin.H{
+		"code" : "E00001",
+		"data": map[string]interface{}{},
+		"message": "employee not found",
 	})
 }
 
@@ -29,10 +31,11 @@ func AddEmployee(c *gin.Context){  //add the new information
 		log.Fatal(err)
 	}
 	c.JSON(http.StatusOK, gin.H{
+		"code": "999999",
 		"employee" : newEmployee,
+		"message": "ok",
 	})
-	model.Worker=append(model.Worker,newEmployee)
-	model.Num++
+	defer newEmployee.AddEmployee()
 	//hello.CachedFile()
 }
 
@@ -47,12 +50,16 @@ func UpdateEmployee(c *gin.Context){   //update the information
 			model.Worker[i] = newEmployee
 		}
 		c.JSON(http.StatusOK, gin.H{
+			"code": "999999",
 			"employee": newEmployee,
+			"message": "ok",
 		})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"404" : "not found",
+	c.JSON(http.StatusNotFound, gin.H{
+		"code" : "E000001",
+		"data": map[string]interface{}{},
+		"message": "not find employee",
 	})
 }
 
@@ -60,21 +67,19 @@ func DeleteEmployee(c *gin.Context){   //delete the information
 	number := c.Query("number")
 	for i := 0; i < model.Num; i++ {
 		if model.Worker[i].Number == number {
-			//fmt.Println(cap(employee.Worker),len(employee.Worker))
 			c.JSON(http.StatusOK,gin.H{
+				"code": "999999",
 				"employee": model.Worker[i],
+				"message": "ok",
 			})
-			if i < len(model.Worker) - 1 {
-				model.Worker = append(model.Worker[:i], model.Worker[i+1:]...)
-			}else{
-				model.Worker= model.Worker[:len(model.Worker)-1]
-			}
-			model.Num--
+			model.DeleteEmployee(i)
 			//hello.CachedFile()
 			return
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"404" : "not found",
+	c.JSON(http.StatusNotFound, gin.H{
+		"code" : "E000001",
+		"data": map[string]interface{}{},
+		"message": "not find employee",
 	})
 }

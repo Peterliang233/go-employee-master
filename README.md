@@ -85,7 +85,8 @@
 
 - Request Body
 
-```json{
+```json
+{
 	"code" : 200,
 	"employee":{
 		"number" :    "6109119121",
@@ -107,6 +108,7 @@
 		"profession" : "computer",
 		"task" :       "move trick",
 	}
+}
 ```
 
  | 序号 |  参数   |  类型  |  简介  | 必须 |
