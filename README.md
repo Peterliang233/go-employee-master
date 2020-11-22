@@ -20,6 +20,7 @@
 		"Name" :       "Peterliang",
 		"Profession" : "computer",
 		"Task" :       "move trick",
+	}
 }
 ```
 
