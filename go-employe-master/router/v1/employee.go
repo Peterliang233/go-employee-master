@@ -8,14 +8,11 @@ import (
 )
 
 func FindEmployee(c *gin.Context){  //find the information
-	number := c.Query("Number")
+	number := c.Query("number")
 	for i := 0; i < model.Num; i++ {
 		if model.Worker[i].Number == number {
-			c.JSON(http.StatusOK,gin.H{
-				"Number" :     model.Worker[i].Number,
-				"Name" :       model.Worker[i].Name,
-				"Profession" : model.Worker[i].Profession,
-				"Task" :       model.Worker[i].Task,
+			c.JSON(http.StatusOK, gin.H{
+				"employee": model.Worker[i],
 			})
 			return
 		}
@@ -60,7 +57,7 @@ func UpdateEmployee(c *gin.Context){   //update the information
 }
 
 func DeleteEmployee(c *gin.Context){   //delete the information
-	number := c.Query("Number")
+	number := c.Query("number")
 	for i := 0; i < model.Num; i++ {
 		if model.Worker[i].Number == number {
 			//fmt.Println(cap(employee.Worker),len(employee.Worker))

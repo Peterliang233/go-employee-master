@@ -2,7 +2,7 @@ package routers
 
 import (
 	middlewares "github.com/Peterliang233/Function/middleware"
-	v12 "github.com/Peterliang233/Function/router/v1"
+	v1 "github.com/Peterliang233/Function/router/v1"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,10 +11,10 @@ func InitRouters() *gin.Engine {
 	router.Use(middlewares.Adapter)
 	api := router.Group("/api")
 	{
-		api.GET("/employee", v12.FindEmployee)
-		api.POST("/employee", v12.AddEmployee)
-		api.PUT("/employee", v12.UpdateEmployee)
-		api.DELETE("/employee", v12.DeleteEmployee)
+		api.GET("/employee", v1.FindEmployee)
+		api.POST("/employee", v1.AddEmployee)
+		api.PUT("/employee", v1.UpdateEmployee)
+		api.DELETE("/employee", v1.DeleteEmployee)
 	}
 	return router
 }
