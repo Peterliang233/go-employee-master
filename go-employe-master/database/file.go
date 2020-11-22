@@ -3,13 +3,15 @@ package database
 import (
 	"bufio"
 	"github.com/Peterliang233/Function/model"
+	"github.com/Peterliang233/Function/settings"
 	"log"
 	"os"
 )
 
 func ReadFile(){
 	model.Num = 0
-	file := "database/information.txt"
+	//file := "database/information.txt"
+	file := settings.DatabaseString.FilePath
 	inputString, err := os.Open(file)
 	if err != nil {
 		log.Fatal(err)

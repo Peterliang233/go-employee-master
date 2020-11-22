@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"github.com/Peterliang233/Function/model"
 	_ "github.com/Peterliang233/Function/model"
+	"github.com/Peterliang233/Function/settings"
 	"github.com/gin-gonic/gin"
 	"os"
 )
 
 func Adapter(c *gin.Context){
 	inputString, err := os.OpenFile(
-		"database/information.txt",
+		settings.DatabaseString.FilePath,
 		os.O_WRONLY|os.O_TRUNC|os.O_CREATE,
 		0666,
 	)
