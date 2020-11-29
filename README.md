@@ -15,7 +15,7 @@
 
 ```json
 {
-	"number": "6109119121",
+	"number": "6109119121"
 }
 ```
 
@@ -23,13 +23,14 @@
 
 ```json
 {
-	"code" : 200,
+	"code" : 999999,
 	"employee":{
 		"number" :    "6109119121",
 		"name" :       "Peterliang",
 		"profession" : "computer",
 		"task" :       "move trick",
-	}
+	},
+    "message": "ok"
 }
 ```
 
@@ -61,13 +62,14 @@
 
 ```json
 {
-	"code" : 200,
+	"code" : 999999,
 	"employee":{
 		"number" :    "6109119121",
 		"name" :       "Peterliang",
 		"profession" : "computer",
 		"task" :       "move trick",
-	}
+	},
+    "message" : "ok"
 }
 ```
 
@@ -88,7 +90,7 @@
 
 ```json
 {
-	"code" : 200,
+	"code" : 999999,
 	"employee":{
 		"number" :    "6109119121",
 		"name" :       "Peterliang",
@@ -102,13 +104,14 @@
 
 ```json
 {
-	"code" : 200,
+	"code" : 999999,
 	"employee":{
 		"number" :    "6109119121",
 		"name" :       "Peterliang",
 		"profession" : "computer",
 		"task" :       "move trick",
-	}
+	},
+    "message":"ok"
 }
 ```
 
@@ -130,7 +133,7 @@
 
 ```json
 {
-	"number": "6109119121",
+	"number": "6109119121"
 }
 ```
 
@@ -138,13 +141,14 @@
 
 ```json
 {
-	"code" : 200,
+	"code" : 999999,
 	"employee":{
 		"number" :    "6109119121",
 		"name" :       "Peterliang",
 		"profession" : "computer",
-		"task" :       "move trick",
-	}
+		"task" :       "move trick"
+	},
+    "message" : "ok"
 }
 ```
 
