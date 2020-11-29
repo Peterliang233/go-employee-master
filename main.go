@@ -10,10 +10,10 @@ import (
 
 func init(){  //initial
 	settings.LoadSettings()
+	database.ConnectMysql() //连接数据库
 }
 
 func main() {
-	database.ReadFile() //read the history information
 	r := routers.InitRouters()
 	readTimeout := settings.ServerSetting.ReadTimeout
 	writeTimeout := settings.ServerSetting.WriteTimeout
@@ -25,8 +25,9 @@ func main() {
 		WriteTimeout: writeTimeout,
 		MaxHeaderBytes: maxHeaderBytes,
 	}
-	err:=server.ListenAndServe()
+	err:=server.ListenAndServe()  //监听端口
 	if err != nil{
 		fmt.Println(err)
 	}
+	database.Db.Close()  //关闭数据库
 }

@@ -1,26 +1,8 @@
 package model
 
 type WorkMan struct {
-	Number     string
-	Name       string
-	Profession string
-	Task       string
-}
-
-var Worker []WorkMan
-
-var Num int
-
-func (w WorkMan) AddEmployee() {
-	Worker=append(Worker, w)
-	Num++
-}
-
-func DeleteEmployee(i int) {
-	if i < len(Worker) - 1 {
-		Worker = append(Worker[:i], Worker[i+1:]...)
-	}else{
-		Worker= Worker[:len(Worker)-1]
-	}
-	Num--
+	Number     string  //工号
+	Name       string  //姓名
+	Profession string  //职业
+	Task       string  //该员工的任务
 }

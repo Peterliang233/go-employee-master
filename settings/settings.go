@@ -16,7 +16,11 @@ type Server struct {
 var ServerSetting = &Server{}
 
 type Database struct{
-	FilePath string
+	Type string
+	User string
+	Password string
+	Host string
+	Dbname string
 }
 
 var DatabaseString = &Database{}
