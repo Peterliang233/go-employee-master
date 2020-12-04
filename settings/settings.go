@@ -25,6 +25,12 @@ type Database struct{
 
 var DatabaseString = &Database{}
 
+type Login struct {
+	Username string
+	Password string
+}
+
+var UserString = &Login{}
 var cfg *ini.File
 
 func LoadSettings() {
@@ -35,9 +41,10 @@ func LoadSettings() {
 	}
 	mapTo("server", ServerSetting)
 	mapTo("database", DatabaseString)
+	mapTo("login", UserString)
 }
 
-func mapTo(s string, i interface{}) {
+func mapTo(s string, i interface{}) {  //解析配置文件里面的信息
 	err := cfg.Section(s).MapTo(i)
 	if err != nil {
 		log.Fatalln("Cfg.MapTo", s, "err", err)

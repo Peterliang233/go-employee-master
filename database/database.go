@@ -7,7 +7,6 @@ import (
 	"github.com/Peterliang233/Function/settings"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "gorm.io/driver/sqlite"
 	_ "gorm.io/gorm"
 )
 
@@ -22,7 +21,7 @@ func ConnectMysql(){  //连接数据库
 	//	settings.DatabaseString.Host,
 	//	settings.DatabaseString.Dbname,
 	//)
-	Db, err = gorm.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+	Db, err = gorm.Open(settings.DatabaseString.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		settings.DatabaseString.User,
 		settings.DatabaseString.Password,
 		settings.DatabaseString.Host,

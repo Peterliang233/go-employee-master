@@ -5,6 +5,7 @@ import (
 	"github.com/Peterliang233/Function/database"
 	routers "github.com/Peterliang233/Function/router"
 	"github.com/Peterliang233/Function/settings"
+	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
@@ -14,6 +15,7 @@ func init(){  //initial
 }
 
 func main() {
+	gin.SetMode(settings.ServerSetting.RunMode)
 	r := routers.InitRouters()
 	readTimeout := settings.ServerSetting.ReadTimeout
 	writeTimeout := settings.ServerSetting.WriteTimeout

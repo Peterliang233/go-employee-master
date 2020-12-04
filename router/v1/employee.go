@@ -10,16 +10,6 @@ import (
 
 func FindEmployee(c *gin.Context){  //查找员工信息
 	number := c.Query("number")
-	//for i := 0; i < model.Num; i++ {
-	//	if model.Worker[i].Number == number {
-	//		c.JSON(http.StatusOK, gin.H{
-	//			"employee": model.Worker[i],
-	//		})
-	//		return
-	//	}
-	//}
-	//根据员工工号查找信息
-	//database.Db.AutoMigrate(&model.WorkMan{})
 	var newEmployee model.WorkMan
 	//newEmployee.Number = number
 	if err:=database.Db.Where("number = ?", number).First(&newEmployee).Error;err != nil{
