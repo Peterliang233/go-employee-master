@@ -23,7 +23,7 @@ func AuthHandler(c *gin.Context) {
 		return
 	}
 	// 校验用户名和密码是否正确
-	//fmt.Println(user.Username,user.Password)
+	fmt.Println(user.Username, user.Password)
 	if user.Username == settings.UserString.Username && user.Password == settings.UserString.Password {
 		// 生成Token
 		tokenString, _ := GenToken(user.Username)
@@ -48,8 +48,8 @@ func GenToken(username string) (string, error) {
 	c := model.MyClaims{
 		Username: username, // 自定义字段
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(model.TokenExpireDuration).Unix(), // 过期时间
-			Issuer:    "my-project",                               // 签发人
+			ExpiresAt: time.Now().Add(time.Hour).Unix(), // 过期时间
+			Issuer:    settings.UserString.Issuer,       // 签发人
 		},
 	}
 	// 使用指定的签名方法创建签名对象

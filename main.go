@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func init(){  //initial
+func init() { //initial
 	settings.LoadSettings()
 	database.ConnectMysql() //连接数据库
 }
@@ -21,15 +21,15 @@ func main() {
 	writeTimeout := settings.ServerSetting.WriteTimeout
 	maxHeaderBytes := 1 << 20
 	server := &http.Server{
-		Addr : ":9090",
-		Handler: r,
-		ReadTimeout: readTimeout,
-		WriteTimeout: writeTimeout,
+		Addr:           ":9090",
+		Handler:        r,
+		ReadTimeout:    readTimeout,
+		WriteTimeout:   writeTimeout,
 		MaxHeaderBytes: maxHeaderBytes,
 	}
-	err:=server.ListenAndServe()  //监听端口
-	if err != nil{
+	err := server.ListenAndServe() //监听端口
+	if err != nil {
 		fmt.Println(err)
 	}
-	database.Db.Close()  //关闭数据库
+	database.CloseDatabase() //关闭数据库
 }

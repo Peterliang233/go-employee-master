@@ -7,30 +7,31 @@ import (
 )
 
 type Server struct {
-	RunMode string
-	HttpMode int
-	ReadTimeout time.Duration
+	RunMode      string
+	HttpMode     int
+	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 }
 
 var ServerSetting = &Server{}
 
-type Database struct{
-	Type string
-	User string
+type Database struct {
+	Type     string
+	User     string
 	Password string
-	Host string
-	Dbname string
+	Host     string
+	Dbname   string
 }
 
 var DatabaseString = &Database{}
 
-type Login struct {
+type Jwt struct {
 	Username string
 	Password string
+	Issuer   string
 }
 
-var UserString = &Login{}
+var UserString = &Jwt{}
 var cfg *ini.File
 
 func LoadSettings() {
@@ -41,10 +42,10 @@ func LoadSettings() {
 	}
 	mapTo("server", ServerSetting)
 	mapTo("database", DatabaseString)
-	mapTo("login", UserString)
+	mapTo("jwt", UserString)
 }
 
-func mapTo(s string, i interface{}) {  //解析配置文件里面的信息
+func mapTo(s string, i interface{}) { //解析配置文件里面的信息
 	err := cfg.Section(s).MapTo(i)
 	if err != nil {
 		log.Fatalln("Cfg.MapTo", s, "err", err)

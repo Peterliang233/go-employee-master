@@ -12,7 +12,7 @@ import (
 
 var Db *gorm.DB
 
-func ConnectMysql(){  //连接数据库
+func ConnectMysql() { //连接数据库
 	var err error
 	//fmt.Printf("%s:%s@tcp(%s)/%s?" +
 	//	"charset=utf8mb4&PraseTime=True&loc=Local",
@@ -26,7 +26,7 @@ func ConnectMysql(){  //连接数据库
 		settings.DatabaseString.Password,
 		settings.DatabaseString.Host,
 		settings.DatabaseString.Dbname,
-		))
+	))
 	//Db, err = gorm.Open("mysql", "root:mysqlpassword@(localhost)/data?charset=utf8mb4&parseTime=True&loc=Local")
 	Db.SingularTable(true)
 	if err != nil {
@@ -34,4 +34,8 @@ func ConnectMysql(){  //连接数据库
 	}
 	//defer Db.Close()
 	Db.AutoMigrate(&model.WorkMan{})
+}
+
+func CloseDatabase() {
+	Db.Close()
 }
