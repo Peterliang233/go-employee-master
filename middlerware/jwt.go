@@ -1,11 +1,53 @@
 package middlerware
 
 import (
-	"github.com/Peterliang233/Function/controller"
+	"errors"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+	"time"
 )
+
+const (
+	AuthorizationEmpty = 2003
+	PostFormalError    = 2004
+	InvalidToken       = 2005
+)
+
+type MyClaims struct {
+	Username string   `json:"username"`
+	Roles    []string `json:"roles"`
+	jwt.StandardClaims
+}
+
+var TokenSecret = []byte("NCUHome")
+
+func GenerateToken(username string, roles []string) (string, error) {
+	mc := MyClaims{
+		username,
+		roles,
+		jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(2 * time.Hour).Unix(),
+			Issuer:    "go-sys-employee",
+		},
+	}
+	return jwt.NewWithClaims(jwt.SigningMethodHS256, mc).SignedString(TokenSecret)
+}
+
+//解析token
+func ParseToken(tokenString string) (*MyClaims, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &MyClaims{}, func(token *jwt.Token) (i interface{}, err error) {
+		return TokenSecret, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if claims, ok := token.Claims.(*MyClaims); ok && token.Valid {
+		return claims, nil
+	}
+	return nil, errors.New("invalid error")
+}
 
 //JWTAuthMiddleware 基于JWT的认证中间件
 func JWTAuthMiddleware() func(c *gin.Context) {
@@ -16,7 +58,7 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		authHeader := c.Request.Header.Get("Authorization")
 		if authHeader == "" {
 			c.JSON(http.StatusOK, gin.H{
-				"code": 2003,
+				"code": AuthorizationEmpty,
 				"msg":  "请求头中auth为空",
 			})
 			c.Abort()
@@ -26,17 +68,17 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		parts := strings.SplitN(authHeader, " ", 2)
 		if !(len(parts) == 2 && parts[0] == "Bearer") {
 			c.JSON(http.StatusOK, gin.H{
-				"code": 2004,
+				"code": InvalidToken,
 				"msg":  "请求头中auth格式有误",
 			})
 			c.Abort()
 			return
 		}
 		// parts[1]是获取到的tokenString，我们使用之前定义好的解析JWT的函数来解析它
-		mc, err := controller.ParseToken(parts[1])
+		mc, err := ParseToken(parts[1])
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
-				"code": 2005,
+				"code": PostFormalError,
 				"msg":  "无效的Token",
 			})
 			c.Abort()

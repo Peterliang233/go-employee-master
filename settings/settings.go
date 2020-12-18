@@ -24,14 +24,6 @@ type Database struct {
 }
 
 var DatabaseString = &Database{}
-
-type Jwt struct {
-	Username string
-	Password string
-	Issuer   string
-}
-
-var UserString = &Jwt{}
 var cfg *ini.File
 
 func LoadSettings() {
@@ -42,7 +34,6 @@ func LoadSettings() {
 	}
 	mapTo("server", ServerSetting)
 	mapTo("database", DatabaseString)
-	mapTo("jwt", UserString)
 }
 
 func mapTo(s string, i interface{}) { //解析配置文件里面的信息

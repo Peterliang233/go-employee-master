@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/Peterliang233/Function/database"
+	"github.com/Peterliang233/Function/model"
 	routers "github.com/Peterliang233/Function/router"
 	"github.com/Peterliang233/Function/settings"
 	"github.com/gin-gonic/gin"
@@ -10,8 +10,8 @@ import (
 )
 
 func init() { //initial
-	settings.LoadSettings()
-	database.ConnectMysql() //连接数据库
+	settings.LoadSettings() //加载配置
+	model.ConnectMysql()    //连接数据库
 }
 
 func main() {
@@ -31,5 +31,5 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	database.CloseDatabase() //关闭数据库
+	model.CloseDatabase() //关闭数据库
 }

@@ -1,13 +1,40 @@
 # API 文档
 - [API 文档](#api---)
 	+ [basic Response Body]
+* [0,用户登录]（#0---）
 * [1.获取员工信息](#1---)
 * [2.添加员工信息](#2----)
 * [3.更新员工信息](#3-----)
 * [4.删除员工信息](#4------)
 
+##用户登录
+- URL: v1/login
+
+- Method: POST
+
+- Request Body
+
+```json
+{
+  "username" : "Peter",
+  "password": "3607812001lyp"
+}
+```
+
+- Response Body
+
+```json
+{
+  "code" : 0,
+  "msg" : "登录成功",
+  "detail" : "welcome",
+  "username" : "Peter",
+  "roles" : "admin",
+  "token" : "token"
+}
+```
 ## 获取员工信息
-- URL: /api/employee
+- URL: v1/user/employee
 
 - Method: GET
 
@@ -28,7 +55,7 @@
 		"number" :    "6109119121",
 		"name" :       "Peterliang",
 		"profession" : "computer",
-		"task" :       "move trick",
+		"task" :       "move trick"
 	},
     "message": "ok"
 }
@@ -40,7 +67,7 @@
 
 ## 添加员工信息
 
-- URL: /api/employee
+- URL:v1/user/employee
 
 - Method: POST
 
@@ -48,13 +75,10 @@
 
 ```json
 {
-	"code" : 200,
-	"employee":{
-		"number" :    "6109119121",
-		"name" :       "Peterliang",
-		"profession" : "computer",
-		"task" :       "move trick",
-	}
+	"number" :    "6109119121",
+	"name" :       "Peterliang",
+	"profession" : "computer",
+	"task" :       "move trick"
 }
 ```
 
@@ -67,7 +91,7 @@
 		"number" :    "6109119121",
 		"name" :       "Peterliang",
 		"profession" : "computer",
-		"task" :       "move trick",
+		"task" :       "move trick"
 	},
     "message" : "ok"
 }
@@ -82,7 +106,7 @@
 
 ## 修改员工信息
 
-- URL: /api/employee
+- URL: v1/user/employee
 
 - Method: PUT
 
@@ -90,13 +114,10 @@
 
 ```json
 {
-	"code" : 999999,
-	"employee":{
-		"number" :    "6109119121",
-		"name" :       "Peterliang",
-		"profession" : "computer",
-		"task" :       "move trick",
-	}
+	"number" :    "6109119121",
+	"name" :       "Peterliang",
+	"profession" : "computer",
+	"task" :       "move trick"
 }
 ```
 
@@ -109,7 +130,7 @@
 		"number" :    "6109119121",
 		"name" :       "Peterliang",
 		"profession" : "computer",
-		"task" :       "move trick",
+		"task" :      "move trick"
 	},
     "message":"ok"
 }
@@ -125,7 +146,7 @@
 
 ## 删除员工信息
 
-- URL: /api/employee
+- URL: v1/user/employee
 
 - Method: DELETE
 
