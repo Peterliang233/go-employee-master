@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func init() { //initial
+func init() { //初始化
 	settings.LoadSettings() //加载配置
 	model.ConnectMysql()    //连接数据库
 }

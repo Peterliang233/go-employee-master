@@ -1,7 +1,9 @@
+use data;
+#touch + (.sql 文件的绝对路径)
 DROP TABLE IF EXISTS employee;
 CREATE TABLE employee(
 	id INT NOT NULL AUTO_INCREMENT,
-	real_name VARCHAR(11) NOT NULL,
+	real_name VARCHAR(33) NOT NULL,
 	nick_name VARCHAR(33) NOT NULL,
 	english_name VARCHAR(33) NOT NULL,
 	sex VARCHAR(33) NOT NULL,
@@ -12,7 +14,6 @@ CREATE TABLE employee(
 	PRIMARY KEY(id)
 );
 insert into employee values (666,'lyp','Peter','Peterliang','male',18,'nanchang','18379841098','3607812001');
-
 DROP TABLE IF EXISTS user;
 CREATE TABLE user(
     id INT NOT NULL primary key AUTO_INCREMENT,
@@ -22,7 +23,6 @@ CREATE TABLE user(
 	CONSTRAINT fk_user_employee_id FOREIGN KEY(employee_id) REFERENCES employee(id)
 );
 insert into user values (1,'Peter','$2a$04$fG1Tq4MQ9KndXX4EB6k8W.6hUIP.q9nmtYLTvty3dvlPLz5fG0Amq',666);
-
 DROP TABLE IF EXISTS department;
 CREATE TABLE department(
     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -32,7 +32,6 @@ insert into department values (1,'adminer group');
 insert into department values (2,'developer group');
 insert into department values (3,'management group');
 insert into department values (4,'product group');
-
 DROP TABLE IF EXISTS role;
 CREATE TABLE role(
     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -42,7 +41,6 @@ insert into role values (1,'admin');
 insert into role values (2,'boss');
 insert into role values (3,'manage');
 insert into role values (4,'employee');
-
 DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -52,7 +50,6 @@ CREATE TABLE user_role(
 	constraint fk_role_user_id foreign key(role_id) references role(id)
 );
 insert into user_role values (1,1,1);
-
 DROP TABLE IF EXISTS user_department;
 CREATE TABLE user_department(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

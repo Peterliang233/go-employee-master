@@ -131,7 +131,7 @@ func DeleteEmployee(c *gin.Context) {
 	//正式删除该用户信息
 	//获取用户id
 	var id []uint64
-	if err := database.DB.Select("username = ?", username).Pluck("id", &id).Error; err != nil {
+	if err := database.DB.Table("user").Where("username = ?", username).Pluck("id", &id).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"msg":  "查询失败",
 			"code": 2005,
