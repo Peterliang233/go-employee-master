@@ -1,5 +1,5 @@
-use data;
-#touch + (.sql 文件的绝对路径)
+#use data;
+#source + .sql文件路径
 DROP TABLE IF EXISTS employee;
 CREATE TABLE employee(
 	id INT NOT NULL AUTO_INCREMENT,
