@@ -223,6 +223,7 @@ func UpdateEmployee(c *gin.Context) {
 		return
 	} else if controller.IdentifyAndUsername.Identify == "manager" {
 		if user.Roles[0] == "employee" {
+			//对数据库进行更新操作
 			if err := database.DB.Model(&employee).Where("id = ?", employee.ID).Save(&employee).Error; err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{
 					"code": 4,
@@ -299,7 +300,7 @@ func UpdateEmployee(c *gin.Context) {
 	}
 }
 
-//添加员工信息，类似与注册帐号的功能
+//添加员工信息，只有管理员才能有注册帐号的功能
 func AddEmployee(c *gin.Context) {
 	var NewEmployee model.Employee
 	err := c.ShouldBind(&NewEmployee)
@@ -319,6 +320,15 @@ func AddEmployee(c *gin.Context) {
 	department := c.Query("department")
 	if err != nil {
 		fmt.Println("字符串转化错误")
+		return
+	}
+	//判断两者的id是否对应
+	if employeeId != int(NewEmployee.ID) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg":    "参数错误",
+			"detail": "用户employee_id与employee的id不对应",
+			"code":   1,
+		})
 		return
 	}
 	if controller.IdentifyAndUsername.Identify != "admin" {

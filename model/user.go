@@ -11,29 +11,32 @@ import (
 )
 
 const (
-	UserNotFound = 10001
-	UserFailedFind = 10002
+	UserNotFound           = 10001
+	UserFailedFind         = 10002
 	UserCheckPasswordError = 10003
 )
+
 //检查登录时候的密码是否正确
 func (user *User) CheckoutPassword() (int, error) {
 	var passwordHashPair []string
 	if err := database.DB.Table("user").Where("username = ?", &user.Username).
 		Pluck("password_hash", &passwordHashPair).Error; err != nil {
-			if gorm.IsRecordNotFoundError(err) {
-				return UserNotFound, err
-			}
-			return UserFailedFind, err
+		if gorm.IsRecordNotFoundError(err) {
+			return UserNotFound, err
+		}
+		return UserFailedFind, err
 	}
 	if len(passwordHashPair) == 0 {
 		return UserNotFound, errors.New("false")
 	}
+	//对密码进行解密操作
 	err := bcrypt.CompareHashAndPassword([]byte(passwordHashPair[0]), []byte(user.PasswordHash))
 	if err != nil {
 		return UserCheckPasswordError, err
 	}
-	return 0,nil
+	return 0, nil
 }
+
 //获取用户的角色
 func (user *User) GetUserRoles() error {
 	err := database.DB.Table("user u").
@@ -46,6 +49,7 @@ func (user *User) GetUserRoles() error {
 	}
 	return nil
 }
+
 //获取用户的身份
 func (user *User) GetUserDepartments() error {
 	err := database.DB.Table("user u").
