@@ -17,7 +17,14 @@ func InitRouters() *gin.Engine { //定义路由组
 	{
 		api.GET("/employee", v1.FindEmployee)
 		api.POST("/employee", v1.AddEmployee)
-		api.PUT("/employee", v1.UpdateEmployee)
+		//新建一个对信息进行更新的路由组
+		update := api.Group("/update")
+		{
+			update.PUT("/employer", v1.UpdateEmployee)
+			update.PUT("/password", v1.UpdatePassword)
+			update.PUT("/role", v1.UpdateRole)
+			update.PUT("/employee", v1.UpdateDepartment)
+		}
 		api.DELETE("/employee", v1.DeleteEmployee)
 	}
 	return router

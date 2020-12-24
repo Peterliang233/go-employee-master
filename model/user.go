@@ -14,6 +14,8 @@ const (
 	UserNotFound           = 10001
 	UserFailedFind         = 10002
 	UserCheckPasswordError = 10003
+	GeneratePasswordError  = 10004
+	UpdatePasswordError    = 10005
 )
 
 //检查登录时候的密码是否正确
@@ -61,6 +63,18 @@ func (user *User) GetUserDepartments() error {
 		return err
 	}
 	return nil
+}
+
+//修改用户密码
+func ChangePassword(username string, newPassword string) (int, error) {
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return GeneratePasswordError, err
+	}
+	if err := database.DB.Exec("update user set password_hash = ? where username = ?", passwordHash, username).Error; err != nil {
+		return UpdatePasswordError, err
+	}
+	return 0, nil
 }
 
 func ConnectMysql() { //连接数据库
