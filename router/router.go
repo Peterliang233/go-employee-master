@@ -23,7 +23,7 @@ func InitRouters() *gin.Engine { //定义路由组
 			update.PUT("/employer", v1.UpdateEmployee)
 			update.PUT("/password", v1.UpdatePassword)
 			update.PUT("/role", v1.UpdateRole)
-			update.PUT("/employee", v1.UpdateDepartment)
+			update.PUT("/department", v1.UpdateDepartment)
 		}
 		api.DELETE("/employee", v1.DeleteEmployee)
 	}
