@@ -2,7 +2,7 @@
 #source + .sql文件路径
 DROP TABLE IF EXISTS employee;
 CREATE TABLE employee(
-	id INT NOT NULL AUTO_INCREMENT,
+	id INT NOT NULL,
 	real_name VARCHAR(33) NOT NULL,
 	nick_name VARCHAR(33) NOT NULL,
 	english_name VARCHAR(33) NOT NULL,

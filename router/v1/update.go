@@ -50,9 +50,11 @@ func UpdateEmployee(c *gin.Context) {
 			return
 		} else {
 			c.JSON(http.StatusOK, gin.H{
-				"code":     5,
-				"msg":      "ok",
-				"employee": employee,
+				"code": 5,
+				"msg":  "ok",
+				"data": map[string]interface{}{
+					"employee": employee,
+				},
 			})
 			return
 		}
@@ -74,9 +76,11 @@ func UpdateEmployee(c *gin.Context) {
 				return
 			} else {
 				c.JSON(http.StatusOK, gin.H{
-					"code":     5,
-					"msg":      "ok",
-					"employee": employee,
+					"code": 5,
+					"msg":  "ok",
+					"data": map[string]interface{}{
+						"employee": employee,
+					},
 				})
 				return
 			}
@@ -97,9 +101,11 @@ func UpdateEmployee(c *gin.Context) {
 				return
 			} else {
 				c.JSON(http.StatusOK, gin.H{
-					"code":     5,
-					"msg":      "ok",
-					"employee": employee,
+					"code": 5,
+					"msg":  "ok",
+					"data": map[string]interface{}{
+						"employee": employee,
+					},
 				})
 				return
 			}
@@ -126,9 +132,11 @@ func UpdateEmployee(c *gin.Context) {
 				return
 			} else {
 				c.JSON(http.StatusOK, gin.H{
-					"code":     5,
-					"msg":      "ok",
-					"employee": employee,
+					"code": 5,
+					"msg":  "ok",
+					"data": map[string]interface{}{
+						"employee": employee,
+					},
 				})
 				return
 			}
@@ -212,9 +220,11 @@ func UpdatePassword(c *gin.Context) {
 			return
 		}
 		c.JSON(http.StatusOK, gin.H{
-			"msg":      "修改成功",
-			"username": loginRequestBody.Username,
-			"code":     0,
+			"msg": "修改成功",
+			"data": map[string]interface{}{
+				"username": loginRequestBody.Username,
+			},
+			"code": 0,
 		})
 		return
 	} else {
@@ -245,9 +255,11 @@ func UpdatePassword(c *gin.Context) {
 				return
 			}
 			c.JSON(http.StatusOK, gin.H{
-				"msg":      "修改成功",
-				"username": loginRequestBody.Username,
-				"code":     0,
+				"msg": "修改成功",
+				"data": map[string]interface{}{
+					"username": loginRequestBody.Username,
+				},
+				"code": 0,
 			})
 			return
 		}
@@ -319,11 +331,13 @@ func UpdateRole(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"msg":      "修改成功",
-		"username": username,
-		"old_role": user.Roles[0],
-		"new_role": newRole,
-		"code":     0,
+		"msg": "修改成功",
+		"data": map[string]interface{}{
+			"username": username,
+			"old_role": user.Roles[0],
+			"new_role": newRole,
+		},
+		"code": 0,
 	})
 }
 
@@ -388,10 +402,12 @@ func UpdateDepartment(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"msg":      "修改成功",
-		"username": username,
-		"old_role": user.Departments[0],
-		"new_role": newDepartment,
-		"code":     0,
+		"msg": "修改成功",
+		"data": map[string]interface{}{
+			"username": username,
+			"old_role": user.Departments[0],
+			"new_role": newDepartment,
+		},
+		"code": 0,
 	})
 }

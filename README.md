@@ -58,25 +58,28 @@
 
 ```json
 {
-  "code": 2000,
-  "departments": [
-    "adminer group"
-  ],
-  "employee": {
-    "id": 666,
-    "real_name": "lyp",
-    "nick_name": "Peter",
-    "english_name": "Peterliang",
-    "sex": "male",
-    "age": 18,
-    "address": "nanchang",
-    "mobile_phone": "18379841098",
-    "id_card": "3607812001"
-  },
-  "msg": "ok",
-  "roles": [
-    "admin"
-  ]
+	"code": 2000,
+	"data": {
+		"departments": [
+			"developer group"
+		],
+		"employee": {
+			"id": 666,
+			"real_name": "Peterliang",
+			"nick_name": "xiaoliang",
+			"english_name": "peter",
+			"sex": "male",
+			"age": 19,
+			"address": "ruijing",
+			"mobile_phone": "18379841098",
+			"id_card": "3607812001"
+		},
+		"roles": [
+			"admin"
+		],
+		"username": "Peter"
+	},
+	"msg": "ok"
 }
 ```
 
@@ -94,24 +97,19 @@
 
 ```json
 {
-  "id" : 333,
-  "real_name" : "zhanjianpeng",
-  "nick_name" : "xiaozhan",
-  "english_name" : "zjp",
-  "sex" : "male",
-  "age" : 19,
-  "address" : "jian",
-  "mobile_phone" : "188423342323",
-  "id_card" : "3607812001"
-}
-```
-```json
-{
-  "username" : "aaa",
-  "password" : "aaa",
-  "employee_id" : 123,
-  "role" : "admin",
-  "department" : "adminer group“
+	"id" : 333,
+	"real_name" : "zhanjianpeng",
+	"nick_name" : "xiaozhan",
+	"english_name" : "zjp",
+	"sex" : "male",
+	"age" : 19,
+	"address" : "jian",
+	"mobile_phone" : "188423342323",
+	"id_card" : "3607812001",
+	"username" :"zjp",
+	"password" : "3607812001lyp",
+	"role" : "employee",
+	"department" : "adminer group"
 }
 ```
 
@@ -119,9 +117,25 @@
 
 ```json
 {
-  "code": 5,
-  "msg": "创建用户成功",
-  "username": "zhanjianpeng"
+	"code": 5,
+	"data": {
+		"NewEmployee": {
+			"id": 333,
+			"real_name": "zhanjianpeng",
+			"nick_name": "xiaozhan",
+			"english_name": "zjp",
+			"sex": "male",
+			"age": 19,
+			"address": "jian",
+			"mobile_phone": "188423342323",
+			"id_card": "3607812001",
+			"username": "zjp",
+			"password": "$2a$10$Dw92N36Zps.i/pmnJlUkkuY7fNKbSTCykW3ZNTKAM/C6OeeegPl5W",
+			"role": "employee",
+			"department": "adminer group"
+		}
+	},
+	"msg": "创建用户成功"
 }
 ```
 | 序号 |   参数    |     类型      |         规则          |    简介    |
@@ -208,9 +222,11 @@
 
 ```json
 {
-  "code": 2000,
-  "msg": "ok",
-  "username": "zhanjianpeng"
+	"code": 2000,
+	"data": {
+		"username": "zjp"
+	},
+	"msg": "ok"
 }
 ```
 | 序号 |   参数    |     类型      |         规则          |    简介    |
