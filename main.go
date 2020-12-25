@@ -1,12 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"github.com/Peterliang233/Function/model"
 	routers "github.com/Peterliang233/Function/router"
 	"github.com/Peterliang233/Function/settings"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
 func init() { //初始化
@@ -27,9 +32,25 @@ func main() {
 		WriteTimeout:   writeTimeout,
 		MaxHeaderBytes: maxHeaderBytes,
 	}
-	err := server.ListenAndServe() //监听端口
-	if err != nil {
-		fmt.Println(err)
+	//err := server.ListenAndServe() //监听端口
+	//if err != nil {
+	//	fmt.Println(err)
+	//}
+	//优雅地关闭和重启
+	go func() {
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen:%s\n", err)
+		}
+	}()
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("Shutdown Server...")
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown;", err)
 	}
+	log.Println("Server exiting")
 	model.CloseDatabase() //关闭数据库
 }
