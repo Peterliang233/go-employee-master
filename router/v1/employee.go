@@ -209,6 +209,7 @@ func AddEmployee(c *gin.Context) {
 	//	})
 	//	return
 	//}
+	//只有管理员才能添加新员工信息
 	if controller.IdentifyAndUsername.Identify != "admin" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": 0,
@@ -224,122 +225,136 @@ func AddEmployee(c *gin.Context) {
 	//	})
 	//	return
 	//}
-	//查询数据库里面是否存在相同的id
 	//fmt.Println(NewEmployee.ID)
-	if err := database.DB.Where("id = ?", NewEmployee.ID).First(&model.Employee{}).Error; err == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"code": 7,
-			"msg":  "用户id重复",
-			"data": map[string]interface{}{
-				"id": NewEmployee.ID,
-			},
-		})
-		return
-	}
-	//查询数据库里面是否有已经存在这个用户名,如果不存在，则返回record not found
-	if err := database.DB.Where("username = ?", NewEmployee.Username).First(&model.User{}).Error; err != nil {
-		//fmt.Println(err)
-		//将用户名和密码导入数据库
-		PasswordHash, err := bcrypt.GenerateFromPassword([]byte(NewEmployee.Password), bcrypt.DefaultCost)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"msg":  "加密错误",
-				"code": 5,
-			})
-			return
-		}
-		employeeId := int(NewEmployee.ID)
-		NewEmployee.Password = string(PasswordHash)
-		//利用原生的mysql语言新建一个employee表格
-		if err := database.DB.Exec("insert into employee (id, real_name, nick_name, english_name, sex,"+
-			" age, address, mobile_phone, id_card) values (?, ?, ?, ?, ?, ?, ?, ?, ?);",
-			NewEmployee.ID,
-			NewEmployee.RealName,
-			NewEmployee.NickName,
-			NewEmployee.EnglishName,
-			NewEmployee.Sex,
-			NewEmployee.Age,
-			NewEmployee.Address,
-			NewEmployee.MobilePhone,
-			NewEmployee.IDCard).Error; err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"code": 2,
-				"msg":  "数据库创建失败",
-			})
-			return
-		}
-		//利用原生的mysql语言往表格插入数据，填充user表格
-		if err := database.DB.Exec("insert into user (username, password_hash, employee_id) values (?, ?, ?);",
-			NewEmployee.Username, NewEmployee.Password, employeeId).Error; err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"code": 2,
-				"msg":  "数据库创建失败",
-			})
-			return
-		}
-		//完善user_role表格和user_department表格
-		var userId, roleId, departmentId []uint64
-		if err := database.DB.Table("user").Where("username = ?", NewEmployee.Username).Pluck("id", &userId).
-			Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"code": 4,
-				"msg":  "数据库查询失败",
-			})
-			return
-		}
-		if err := database.DB.Table("role").Where("role_name = ?", NewEmployee.Role).Pluck("id", &roleId).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"code": 4,
-				"msg":  "数据库查询失败",
-			})
-			return
-		}
-		if err := database.DB.Table("department").Where("department_name = ?", NewEmployee.Department).
-			Pluck("id", &departmentId).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"code": 4,
-				"msg":  "数据库查询失败",
-			})
-			return
-		}
-		err = database.DB.Exec("insert into user_role (user_id, role_id) values (?,?);", userId[0], roleId[0]).Error
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"code": 2,
-				"msg":  "数据库创建失败",
-			})
-			return
-		}
-		err = database.DB.Exec("insert into user_department (user_id, department_id) values (?,?);", userId[0], departmentId[0]).Error
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"code": 2,
-				"msg":  "数据库创建失败",
-			})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{
-			"msg": "创建用户成功",
-			"data": map[string]interface{}{
-				"id":           NewEmployee.ID,
-				"real_name":    NewEmployee.RealName,
-				"nick_name":    NewEmployee.NickName,
-				"english_name": NewEmployee.EnglishName,
-				"sex":          NewEmployee.Sex,
-				"age":          NewEmployee.Age,
-				"address":      NewEmployee.Address,
-				"mobile_phone": NewEmployee.MobilePhone,
-				"id_card":      NewEmployee.IDCard,
-				"username":     NewEmployee.Username,
-				"role":         NewEmployee.Role,
-				"department":   NewEmployee.Department,
-			},
-			"code": 5,
-		})
-	} else {
+	//查询数据库里面是否存在相同的username
+	if err := database.DB.Where("username = ?", NewEmployee.Username).First(&model.User{}).Error; err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"msg":  "该用户已经存在",
 			"code": 3,
 		})
+		return
 	}
+	//查询数据库里面是否已经存好了一个一样的信息
+	if err := database.DB.Where(map[string]interface{}{
+		"id":           NewEmployee.ID,
+		"real_name":    NewEmployee.RealName,
+		"nick_name":    NewEmployee.NickName,
+		"english_name": NewEmployee.EnglishName,
+		"sex":          NewEmployee.Sex,
+		"age":          NewEmployee.Age,
+		"address":      NewEmployee.Address,
+		"mobile_phone": NewEmployee.MobilePhone,
+		"id_card":      NewEmployee.IDCard,
+	}).First(&model.Employee{}).Error; err != nil {
+		//数据库里面不存在这个一样的记录
+		//查询数据库里面是否存在相同的id
+		if err := database.DB.Where("id = ?", NewEmployee.ID).First(&model.Employee{}).Error; err == nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code": 7,
+				"msg":  "用户id重复",
+				"data": map[string]interface{}{
+					"id": NewEmployee.ID,
+				},
+			})
+			return
+		} else {
+			//若id没有使用过，利用原生的mysql语言新建一个employee
+			if err := database.DB.Exec("insert into employee (id, real_name, nick_name, english_name, sex,"+
+				" age, address, mobile_phone, id_card) values (?, ?, ?, ?, ?, ?, ?, ?, ?);",
+				NewEmployee.ID,
+				NewEmployee.RealName,
+				NewEmployee.NickName,
+				NewEmployee.EnglishName,
+				NewEmployee.Sex,
+				NewEmployee.Age,
+				NewEmployee.Address,
+				NewEmployee.MobilePhone,
+				NewEmployee.IDCard).Error; err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{
+					"code": 2,
+					"msg":  "数据库创建失败",
+				})
+				return
+			}
+		}
+	}
+	//已经将employee表格建好
+	PasswordHash, err := bcrypt.GenerateFromPassword([]byte(NewEmployee.Password), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg":  "加密错误",
+			"code": 5,
+		})
+		return
+	}
+	employeeId := int(NewEmployee.ID)
+	NewEmployee.Password = string(PasswordHash)
+	//利用原生的mysql语言往表格插入数据，填充user表格
+	if err := database.DB.Exec("insert into user (username, password_hash, employee_id) values (?, ?, ?);",
+		NewEmployee.Username, NewEmployee.Password, employeeId).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 2,
+			"msg":  "数据库创建失败",
+		})
+		return
+	}
+	//完善user_role表格和user_department表格
+	var userId, roleId, departmentId []uint64
+	if err := database.DB.Table("user").Where("username = ?", NewEmployee.Username).Pluck("id", &userId).
+		Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code": 4,
+			"msg":  "数据库查询失败",
+		})
+		return
+	}
+	if err := database.DB.Table("role").Where("role_name = ?", NewEmployee.Role).Pluck("id", &roleId).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code": 4,
+			"msg":  "数据库查询失败",
+		})
+		return
+	}
+	if err := database.DB.Table("department").Where("department_name = ?", NewEmployee.Department).
+		Pluck("id", &departmentId).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code": 4,
+			"msg":  "数据库查询失败",
+		})
+		return
+	}
+	err = database.DB.Exec("insert into user_role (user_id, role_id) values (?,?);", userId[0], roleId[0]).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 2,
+			"msg":  "数据库创建失败",
+		})
+		return
+	}
+	err = database.DB.Exec("insert into user_department (user_id, department_id) values (?,?);", userId[0], departmentId[0]).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 2,
+			"msg":  "数据库创建失败",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"msg": "创建用户成功",
+		"data": map[string]interface{}{
+			"id":           NewEmployee.ID,
+			"real_name":    NewEmployee.RealName,
+			"nick_name":    NewEmployee.NickName,
+			"english_name": NewEmployee.EnglishName,
+			"sex":          NewEmployee.Sex,
+			"age":          NewEmployee.Age,
+			"address":      NewEmployee.Address,
+			"mobile_phone": NewEmployee.MobilePhone,
+			"id_card":      NewEmployee.IDCard,
+			"username":     NewEmployee.Username,
+			"role":         NewEmployee.Role,
+			"department":   NewEmployee.Department,
+		},
+		"code": 5,
+	})
 }
